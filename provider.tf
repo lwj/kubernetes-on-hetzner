@@ -1,11 +1,11 @@
 terraform {
-    required_providers {
-        hcloud = {
-            source = "hetznercloud/hcloud"
-        }
-    }  
+  required_providers {
+    hcloud = {
+      source = "hetznercloud/hcloud"
+    }
+  }
 }
 
 provider "hcloud" {
-    token = var.hcloud_token
+  token = var.hcloud_token
 }

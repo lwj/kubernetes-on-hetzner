@@ -1,5 +1,5 @@
 resource "hcloud_server" "kube_worker" {
-  count = var.workers
+  count       = var.workers
   name        = format("worker%d", count.index + 1)
   server_type = "cx21"
   image       = "ubuntu-20.04"

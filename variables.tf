@@ -10,7 +10,7 @@ variable "location" {
   validation {
     condition     = contains(["nbg1", "fsn1", "hel1"], var.location)
     error_message = "Valid values for location are nbg1, fsn1 or hel1."
-  } 
+  }
 }
 
 variable "workers" {
