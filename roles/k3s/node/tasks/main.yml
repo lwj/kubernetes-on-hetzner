@@ -1,0 +1,43 @@
+---
+- name: Wait up to 5 minutes for host to come online
+  wait_for_connection:
+    timeout: 300
+
+- set_fact:
+    k3s_version: "{{ hostvars[groups['k3s_master'][0]]['k3s_version'] }}"
+  when: "{{ hostvars[groups['k3s_master'][0]]['k3s_version'] is defined }}"
+
+- name: Get latest K3s version
+  uri:
+    url: https://api.github.com/repos/k3s-io/k3s/releases/latest
+    return_content: yes
+    body_format: json
+  register: k3s_releases
+  when: k3s_version is not defined
+
+- set_fact:
+    k3s_version: "{{ k3s_releases.json | json_query('tag_name') }}"
+  when: k3s_version is not defined
+
+- name: Download K3s binary
+  get_url:
+    url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
+    checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-amd64.txt
+    dest: /usr/local/bin/k3s
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy K3s unit configuration file
+  template:
+    src: k3s.service.j2
+    dest: /etc/systemd/system/k3s.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start K3s service
+  systemd:
+    name: k3s
+    daemon_reload: yes
+    state: started

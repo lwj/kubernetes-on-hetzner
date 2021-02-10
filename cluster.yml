@@ -1,0 +1,10 @@
+---
+- hosts: k3s_master
+  gather_facts: no
+  roles:
+    - role: k3s/master
+
+- hosts: k3s_worker
+  gather_facts: no
+  roles:
+    - role: k3s/node

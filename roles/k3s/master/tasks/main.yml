@@ -1,0 +1,54 @@
+---
+- name: Include the K3s node role
+  include_role:
+    name: k3s/node
+
+- name: Wait for token to be created
+  wait_for:
+    path: /var/lib/rancher/k3s/server/node-token
+
+- name: Retrieve value of token
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: k3s_token
+
+- set_fact:
+    k3s_token: "{{ k3s_token | json_query('content') | b64decode }}"
+
+- name: Get internal IP
+  shell: ip -o -4 addr list ens10 | awk '{print $4}' | cut -d/ -f1
+  register: k3s_master_ip
+
+- set_fact:
+    k3s_master_ip: "{{ k3s_master_ip.stdout }}"
+
+- name: Get external IP
+  shell: ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1
+  register: k3s_master_external_ip
+
+- set_fact:
+    k3s_master_external_ip: "{{ k3s_master_external_ip.stdout }}"
+
+- name: Prepare kubeconfig
+  command: "k3s kubectl config set-cluster default --server=https://{{ k3s_master_external_ip }}:6443"
+
+- name: Fetch kubeconfig
+  fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: ~/.kube/config-k3s
+    flat: yes
+
+- name: Check if kubeconfig already exists
+  delegate_to: 127.0.0.1
+  stat:
+    path: ~/.kube/config
+  register: kube_config_stat_result
+
+- debug:
+    msg: "Kubeconfig already exists. K3s kubeconfig has been saved as ~/.kube/config-k3s"
+  when: kube_config_stat_result.stat.exists
+
+- name: Set kubeconfig
+  delegate_to: 127.0.0.1
+  command: mv ~/.kube/config-k3s ~/.kube/config
+  when: not kube_config_stat_result.stat.exists

@@ -1,11 +1,7 @@
-[k3s-master]
+[k3s_master]
 ${master-ip}
 
-[k3s-worker]
+[k3s_worker]
 %{ for worker-ip in worker-ips ~}
 ${worker-ip}
 %{ endfor ~}
-
-[k3s:children]
-k3s-master
-k3s-worker

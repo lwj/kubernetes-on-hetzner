@@ -38,3 +38,6 @@ override.tf.json
 
 # Generated hosts file
 hosts
+
+# Generated pem file
+cluster.pem
