@@ -5,7 +5,7 @@ variable "hcloud_token" {
 
 variable "location" {
   type        = string
-  description = "The location to provision the servers in ('nbg1', 'fsn1' or 'hel1')."
+  description = "Location to provision the servers in ('nbg1', 'fsn1' or 'hel1')."
 
   validation {
     condition     = contains(["nbg1", "fsn1", "hel1"], var.location)
@@ -15,11 +15,11 @@ variable "location" {
 
 variable "workers" {
   type        = number
-  description = "The number of worker nodes to provision."
+  description = "Number of worker nodes to provision."
 }
 
 variable "worker_type" {
   type        = string
-  description = "The type of worker node to provision (defaults to 'cx21')."
+  description = "Type of worker node to provision (defaults to 'cx21')."
   default     = "cx21"
 }
