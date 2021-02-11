@@ -5,7 +5,7 @@
 
 - set_fact:
     k3s_version: "{{ hostvars[groups['k3s_master'][0]]['k3s_version'] }}"
-  when: "{{ hostvars[groups['k3s_master'][0]]['k3s_version'] is defined }}"
+  when: hostvars[groups['k3s_master'][0]]['k3s_version'] is defined
 
 - name: Get latest K3s version
   uri:

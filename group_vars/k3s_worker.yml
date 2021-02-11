@@ -1,3 +1,3 @@
 ---
 k3s_service_type: exec
-k3s_service_args: agent --server https://{{ hostvars[groups['k3s_master'][0]]['k3s_master_ip'] }}:6443 --token {{ hostvars[groups['k3s_master'][0]]['k3s_token'] }}
+k3s_service_args: agent --kubelet-arg="cloud-provider=external" --server https://{{ hostvars[groups['k3s_master'][0]]['k3s_master_ip'] }}:6443 --token {{ hostvars[groups['k3s_master'][0]]['k3s_token'] }}
