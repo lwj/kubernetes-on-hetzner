@@ -58,3 +58,12 @@
 
 - name: Deploy Cloud Controller Manager for Hetzner Cloud
   command: k3s kubectl apply -f https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/master/deploy/ccm-networks.yaml
+
+- name: Deploy Container Storage Interface driver for Hetzner Cloud 
+  command: k3s kubectl apply -f https://raw.githubusercontent.com/hetznercloud/csi-driver/master/deploy/kubernetes/hcloud-csi.yml
+  
+- name: Patch Hetzner Cloud API token secret
+  command: "k3s kubectl patch {{ item }} -n kube-system -p '{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"hcloud-csi-driver\", \"env\":[{\"name\":\"HCLOUD_TOKEN\",\"valueFrom\":{\"secretKeyRef\":{\"name\":\"hcloud\"}}}]}]}}}}'"
+  with_items:
+  - statefulset/hcloud-csi-controller
+  - daemonset/hcloud-csi-node

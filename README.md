@@ -5,6 +5,7 @@
 1. Provisions infrastructure on Hetzner Cloud
 2. Bootstraps a Kubernetes cluster using K3s
 3. Deploys the Cloud Controller Manager for Hetzner Cloud
+4. Deploys the Container Storage Interface driver for Hetzner Cloud
 
 **Requirements:**
 
@@ -15,8 +16,6 @@
 ---
 
 ## Usage
-
-> :warning: Still largely untested and missing features - proceed with caution!
 
 First, provision infrastructure:
 
