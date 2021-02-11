@@ -5,3 +5,6 @@ ${master-ip}
 %{ for worker-ip in worker-ips ~}
 ${worker-ip}
 %{ endfor ~}
+
+[all:vars]
+hcloud_network_id=${network-id}

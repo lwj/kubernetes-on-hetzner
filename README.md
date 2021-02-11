@@ -49,4 +49,3 @@ ansible-playbook cluster.yml --inventory hosts --user root --private-key cluster
 You will again be prompted for a Hetzner Cloud API token. This is used to create the controller for provisioning cloud resources.
 
 Once the playbook has ran to completion, the resulting kubeconfig will be stored as `~/.kube/config` on the control node, ready to be used by `kubectl`. If a kubeconfig already exists, it will be instead saved as `~/.kube/config-k3s`.
-
