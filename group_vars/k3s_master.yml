@@ -1,3 +1,5 @@
 ---
 k3s_service_type: notify
-k3s_service_args: server --disable traefik --disable servicelb --disable-cloud-controller --kubelet-arg="cloud-provider=external" --cluster-cidr="10.244.0.0/16"
+k3s_service_args: >
+  server --disable traefik --disable servicelb --disable-cloud-controller --kubelet-arg="cloud-provider=external"
+  --cluster-cidr="10.244.0.0/16" --flannel-iface ens10
